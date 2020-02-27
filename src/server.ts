@@ -1,5 +1,7 @@
 import * as express from 'express';
 import * as Debug from 'debug';
+import * as db from './db';
+
 const debug = Debug('app');
 
 const {
@@ -8,11 +10,11 @@ const {
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
+app.get('/artists', (req, res) => {
+    res.json(
+        db.artist.getBy()
+    );
 });
-
-// Add a new endpoint that returns a list of artists
 
 app.listen(port, () => {
     debug(`Server running on port: ${port}` );
