@@ -11,10 +11,21 @@ const {
 const app = express();
 
 app.get('/artists', (req, res) => {
-    res.json(
-        db.artist.getBy()
-    );
+    res.json({
+        data: db.artist.getBy()
+    });
 });
+
+app.get('/artists/:id', (req, res) => {
+    const { id } = req.params;
+    const [artist] = db.artist.getBy('id', id);
+    res.json({
+        data: {
+            artist
+        }
+    });
+});
+
 
 app.listen(port, () => {
     debug(`Server running on port: ${port}` );

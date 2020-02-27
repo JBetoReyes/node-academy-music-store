@@ -13,6 +13,6 @@ export class Artist {
         if (!criteria && !query) {
             return artists;
         }
-        return artists.filter((artist) => artist[criteria] === query);
+        return artists.filter((artist) => `${artist[criteria]}` === query) || [];
     }
 }
