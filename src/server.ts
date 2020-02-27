@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as Debug from 'debug';
 import * as db from './db';
+import * as bodyParser from 'body-parser';
 
 const debug = Debug('app');
 
@@ -9,6 +10,8 @@ const {
 } = process.env;
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/artists', (req, res) => {
     res.json({
@@ -26,6 +29,11 @@ app.get('/artists/:id', (req, res) => {
     });
 });
 
+app.post('/artists/', (req, res) => {
+    const payload = req.body;
+    db.artist.post(payload);
+    res.json(payload);
+});
 
 app.listen(port, () => {
     debug(`Server running on port: ${port}` );

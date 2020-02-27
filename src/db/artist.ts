@@ -1,3 +1,7 @@
+import * as Debug from 'debug';
+
+const debug = Debug('app:artist');
+
 export const artists = [{
     name: 'shakira',
     age: 30,
@@ -14,5 +18,10 @@ export class Artist {
             return artists;
         }
         return artists.filter((artist) => `${artist[criteria]}` === query) || [];
+    }
+
+    post(data) {
+        debug('%O', data);
+        artists.push(data);
     }
 }
