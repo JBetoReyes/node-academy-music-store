@@ -1,4 +1,6 @@
 import * as express from 'express';
+import * as Debug from 'debug';
+const debug = Debug('app');
 
 const {
     PORT: port
@@ -13,5 +15,5 @@ app.get('/', (req, res) => {
 // Add a new endpoint that returns a list of artists
 
 app.listen(port, () => {
-    console.log(`Server running on port: ${port}` );
+    debug(`Server running on port: ${port}` );
 });
