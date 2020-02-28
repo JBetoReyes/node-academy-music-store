@@ -1,4 +1,4 @@
-import { Artist } from './artist';
+import { Artist } from './Artist';
 
 const artist = new Artist();
 

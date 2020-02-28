@@ -2,9 +2,9 @@ POST http://localhost:3000/artists HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Maroon 5",
-    "age": 43,
-    "id": 4
+    "name": "Lady gaga",
+    "age": 30,
+    "id": 5
 }
 
 ###
