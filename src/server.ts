@@ -13,6 +13,12 @@ app.get('/artists', (req, res) => {
     });
 });
 
+app.get('/artists/:id', (req, res) => {
+    const { id } = req.params;
+    const [ artist ] = db.artist.getBy('id', id);
+    res.json({ data: { artist }})
+});
+
 app.listen(port, () => {
     debug(`App running on port: ${port}`);
 });

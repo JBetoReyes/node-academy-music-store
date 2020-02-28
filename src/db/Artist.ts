@@ -10,6 +10,9 @@ export const artists = [{
 
 export class Artist {
     getBy(criteria?: string, query?: string) {
-        return artists;
+        if (!criteria || !query) {
+            return artists;
+        }
+        return artists.filter((artist) => `${artist[criteria]}` === query);
     }
 }
