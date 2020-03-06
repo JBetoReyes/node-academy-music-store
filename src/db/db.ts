@@ -1,24 +1,26 @@
 import { createConnection, Connection, Model, Document} from 'mongoose';
 import { debug as Debug } from 'debug';
 import { schemas } from './schemas';
+import { Express } from 'express';
+import { IModelMap } from '.';
 
 const debug = Debug('app:mongodb')
 const error = debug.extend('error');
 export class MongoDB {
     public connection: Connection;
-    public models: Model<Document>[];
+    public models: IModelMap;
     constructor(private url, private port, private user, private password, private dbName) { }
 
-    async init() {
+    async init(app: Express) {
         try {
-            await this.initConnection();
-            this.initModels();
+            await this._initConnection();
+            app.set('Models', this.initModels());
         } catch (err) {
-            error(`error ${error}`);
+            error(`error %O`, err);
         }
     }
 
-    async initConnection() {
+    private async _initConnection() {
         const {
             url,
             port,
@@ -26,10 +28,20 @@ export class MongoDB {
             password,
             dbName
         } = this;
-        this.connection = await createConnection(`mongodb://${user}:${password}@${url}:${port}/${dbName}`);
+        const connectionString = `mongodb://${user}:${password}@${url}:${port}/${dbName}`;
+        debug(`Trying to connect to: ${connectionString}`)
+        this.connection = await createConnection(connectionString);
     }
 
-    initModels() {
-        this.models = schemas.map((s)  => new s(this.connection).buildModel());
+    initModels(): IModelMap {
+        this.models = schemas.reduce((models, schema)  => {
+            const { modelName, model } = new schema(this.connection).buildModel();
+            return {
+                ...models,
+                [modelName]: model
+            }
+        }, {});
+        return this.models;
     }
+
 }

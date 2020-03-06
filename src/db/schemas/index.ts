@@ -1,5 +1,5 @@
-import { ArtistRouter } from '../../routers/artistRouter';
+import { ArtistSchema } from "./artist.schema";
 
 export const schemas = [
-    new ArtistRouter()
+    ArtistSchema
 ];

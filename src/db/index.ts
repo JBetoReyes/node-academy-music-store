@@ -1,9 +1,14 @@
+import { Model, Document } from "mongoose";
+import { MongoDB } from './db';
 const {
     DB_URL: url,
     DB_PORT: port,
     DB_USER: user,
     DB_PASSWORD: password,
-    DB_NAME: collection
+    DB_NAME: dbName
 } = process.env;
 
-const connectionString = `mongodb://${user}:${password}@${url}:${port}/${collection}`;
+export const db = new MongoDB(url, port, user, password, dbName);
+export interface IModelMap {
+    [key: string]: Model<Document>;
+};

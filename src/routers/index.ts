@@ -1,5 +1,5 @@
-import { ArtistRouter } from './artistRouter';
-import { AppRouter } from './appRouter';
+import { ArtistRouter } from './artist.router';
+import { AppRouter } from './app.router';
 
 export const routers: AppRouter[] = [
     new ArtistRouter()

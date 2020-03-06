@@ -1,11 +1,13 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { validAppOperations } from './index';
 import * as Debug from 'debug';
+import { BaseController } from '../controllers/base.controller';
 
 const debug = Debug('app:AppRouter');
 
 export abstract class AppRouter {
     public router = Router();
+    protected _controller: BaseController;
     protected routerOperations: validAppOperations[] = [
         'get',
         'getBy',
@@ -14,8 +16,9 @@ export abstract class AppRouter {
         'delete'
     ];
 
-    constructor(public mainPath: string) {
+    constructor(public mainPath: string, private _modelName: string) {
         this.registerRoutes();
+        this._controller = new BaseController(this._modelName);
     }
 
     registerRoutes() {
@@ -33,6 +36,17 @@ export abstract class AppRouter {
                 this.router[method](path, handler);
             }
         });
+    }
+
+    get() {
+        return {
+            method: 'get',
+            path: '/',
+            handler: async (req: Request, res: Response) => {
+                const response = await this._controller.get(req, res);
+                res.json(response);
+            }
+        }
     }
 
 }
