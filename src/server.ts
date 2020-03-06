@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import * as express from 'express';
 import * as Debug from 'debug';
+import { routers as appRouters }  from './routers';
 import * as db from './db';
 import * as bodyParser from 'body-parser';
 
@@ -48,10 +49,18 @@ export class Server {
         } = this;
         return new Promise((resolve) => {
             this.app = express();
+            this._initRouters();
             this.app.listen(port, () => {
                 debug(`App running on port: ${port}`);
                 resolve();
             });
+        });
+    }
+
+    private _initRouters() {
+        appRouters.forEach((appRouter) => {
+            const { mainPath, router } = appRouter;
+            this.app.use(mainPath, router);
         });
     }
 }
